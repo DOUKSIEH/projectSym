@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue!{% endblock %}
+
+{% block body %}
+ {{dump(users)}}
+    <div class="jumbotron text-center">
+        <h1>Bienvenue...!✅</h1>
+
+        <p>Conveniently scale future-proof applications before bricks-and-clicks ROI. Progressively re-engineer cost effective opportunities vis-a-vis value-added.</p>
+    
+        <div class="container">
+            <h2>Les derniers...! </h2>
+            <div class="row">
+                {% for data in users %}
+                <div class="col">
+                    <div class="card border-secondary mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title">{{data.fullName}}</h4>
+        
+                            <hr>
+        
+                            <div class="card-text">
+                                <img src="{{data.picture}}" alt="Avatar de {{data.fullName}}" class="float-center mr-5">
+                                <br>
+                                <p>{{ data.description | raw }}</p>
+                                <a href="{{ path('events_show', {'id': data.id, 'slug': data.slug })}}" class="btn btn-success float-right">En savoir plus!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+
+        </div>
+        
+    </div>
+{% endblock %}

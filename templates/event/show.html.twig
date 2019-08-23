@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-">
+ <h1>Evenement de l'artiste <em style="color:cyan">{{ nom }} </em></h1>
+ <div class="row">
+ {% for even in event %}
+        <div class="col-3">
+          
+   
+    
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ even.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ even.type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Lieu</th>
+                        <td>{{ even.adresse }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ even.description | slice(0,60) | raw }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix (€) </th>
+                        <td>{{ even.prix }}</td>
+                    </tr>
+                    <tr>
+                        <th>DateDebut</th>
+                        <td>{{ even.dateDebut ? even.dateDebut | date('Y-m-d') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>DateFin</th>
+                        <td>{{ even.dateFin ? even.dateFin | date('Y-m-d') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+         <hr style="color:black">
+    {% endfor %} 
+    </div>
+  
+</div>
+
+{% endblock %}

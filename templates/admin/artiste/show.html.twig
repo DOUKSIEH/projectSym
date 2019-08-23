@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artiste{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+
+            <div class="row">
+
+                <div class="col-10">
+
+                    <h1>L'artiste <em style="color:cyan">{{ artiste.nom }} </em></h1>
+
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ artiste.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ artiste.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Pays</th>
+                                <td>{{ artiste.pays }}</td>
+                            </tr>
+                            <tr>
+                                <th>Style</th>
+                                <td>{{ artiste.style }}</td>
+                            </tr>
+                            <tr>
+                                <th>Presentation</th>
+                                <td>{{ artiste.presentation }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+                <div class="col-2 mt-3">
+                       
+                    <a href="{{ path('admin.artiste.index') }} " class="btn btn-primary mb-3 mt-5">Retour à la liste</a>
+
+                    <a href="{{ path('admin.artiste.edit', {'id': artiste.id}) }}" class="btn btn-success mb-3">Editer</a>
+
+                    {{ include('admin/artiste/_delete_form.html.twig') }}
+               
+                </div>
+        </div>
+            
+    </div>
+
+    
+{% endblock %}

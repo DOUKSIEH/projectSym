@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+  <div class="container mt-3">
+        <h1>Les évenements...</h1>
+
+        <table class="table table-bordered mr-5  ">
+            <thead class="table-danger text-center ">
+                <tr >
+                    <th scope="col"  >Id</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Lieu</th>
+                    <th scope="col">Ville</th>
+                    <th scope="col" >Prix(€)</th>
+                    <th scope="col">DateDebut</th>
+                    <th scope="col" >DatedeFin</th>
+                    <th scope="col">Description</th>               
+                    
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for evenement in evenements %}
+                <tr>
+                    <td>{{ evenement.id }}</td>
+                    <td>{{ evenement.type }}</td>
+                    <td>{{ evenement.lieu }}</td>
+                    <td>{{ evenement.ville }}</td>
+                    <td>{{ evenement.prix  }}  </td>
+                    <td>{{ evenement.dateDebut ? evenement.dateDebut|date('Y-m-d') : '' }}</td>
+                    <td>{{ evenement.dateFin ? evenement.dateFin|date('Y-m-d ') : '' }}</td>
+                    <td>{{ evenement.description }}</td>
+                    <td>
+                        <a href="{{ path('evenement_show', {'id': evenement.id}) }}" class="btn btn-primary mb-3">Visualiser</a>
+                        <a href="{{ path('evenement_edit', {'id': evenement.id}) }}" class="btn btn-success">Editer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('evenement_new') }}" class="btn btn-info">Create new</a>
+    </div>
+
+  
+{% endblock %}
