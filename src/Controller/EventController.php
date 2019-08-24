@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Events;
+use App\Entity\EventLike;
 use App\Repository\EventsRepository;
+use App\Repository\EventLikeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class EventController extends Controller
+class EventController extends AbstractController
 {
     /**
      * @Route("/events", name="events_index")
@@ -89,41 +92,64 @@ class EventController extends Controller
             'event' => $event
         ]);
     }
+    
+    /**
+    *Permet de liker ou unliker un article
+    *@route("/events/{id}/like",name="events_like",methods="GET")
+    * @param Events $event
+    * @param ObjectManager $manager
+    * @param EventLikeRepository $repo
+    * @return Response
+    */
+    public  function like(Events $event, ObjectManager $manager,EventLikeRepository $repo): Response
+    {
+         $user = $this->getUser();
+
+       
+         if (!$user) return $this->json([
+             'code' => 403,
+             'message' => 'Non autorisé, veuillez vous connecter!!!!'
+         ],403);
+         if($event->isLikedByUser($user))
+         {
+             $like = $repo->findOneBy([
+                 'event' => $event,
+                 'user' => $user,
+             ]);
+             $manager->remove($like);
+             $manager->flush();
+         return $this->json([
+                 'code' => 200,
+                 'message' => 'Like bien supprimé',
+                 'likes' => $repo->count(['event' => $event])
+             ], 200);
+         }
+         $like = new EventLike();
+         $like->setEvent($event)
+             ->setUser($user);
+         $manager->persist($like);
+         $manager->flush();
+         return $this->json([
+             'code'=> 200,
+             'message' => 'Like bien ajouté',
+             'likes' => $repo->count(['event' => $event])
+         ], 200);
+    }
     /**
      * Permet d'afficher une seule annonce
      *
-     * @Route("/events/{id}/{slug}", name="events_show")
+     * @Route("events/{id}/{slug}", name="events_show")
      * 
      * @return Response
      */
-    public function show(int $id, EventsRepository $rep , string $slug){
-       
-       
-        $event = $rep->findByAuthor($id);
+    public function show(int  $id, EventsRepository $repo, string $slug )
+    {
+        $event = $repo->findByAuthor($id);
 
-        dump($event);
         return $this->render('event/show.html.twig', [
-            'nom'=>$slug,
-            'event' => $event
+            'nom' => $slug ,
+            'events' => $event
         ]);
     }
-    /**
-     * Permet de supprimer une annonce
-     * 
-     * @Route("/events/{slug}/delete", name="events_delete")
-     * @Security("is_granted('ROLE_USER') and user == event.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
-     *
-     * @param event $event
-     * @param ObjectManager $manager
-     * @return Response
-     */
-    public function delete(Events $event, ObjectManager $manager) {
-        $manager->remove($event);
-        $manager->flush();
-        $this->eventdFlash(
-            'success',
-            "L'annonce <strong>{$event->getTitle()}</strong> a bien été supprimée !"
-        );
-        return $this->redirectToRoute("events_index");
-    }
+    
 }

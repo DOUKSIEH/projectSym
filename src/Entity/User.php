@@ -59,7 +59,7 @@ class User implements UserInterface
     private $style;
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min=100, minMessage="Votre description doit faire au moins 100 caractères")
+     * @Assert\Length(min=20, minMessage="Votre description doit faire au moins 100 caractères")
      */
     private $description;
 
@@ -78,10 +78,16 @@ class User implements UserInterface
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EventLike", mappedBy="user")
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->UserRoles = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
     
     public function getFullName() {
@@ -259,13 +265,38 @@ class User implements UserInterface
             $this->slug = $slugify->slugify($this->firstName . ' ' . $this->lastName);
         }
     }
-    public function __toString()
+
+    /**
+     * @return Collection|EventLike[]
+     */
+    public function getLikes(): Collection
     {
-        // to show the name of the Category in the select
-        return $this->firstName;
-        // to show the id of the Category in the select
-        // return $this->id;
+        return $this->likes;
     }
+
+    public function addLike(EventLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(EventLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    
    
  
 }

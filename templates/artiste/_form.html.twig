@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    
+    {{ form_row(form.nom, {'attr' : {'placeholder': 'votre nom'} }) }}
+     {{ form_row(form.pays, {'attr' : {'placeholder': 'votre pays.. '} }) }}
+      {{ form_row(form.style, {'attr' : {'placeholder': 'votre style...'} }) }}
+       {{ form_row(form.presentation, {'attr' : {'placeholder': 'vous présentez...'} }) }}
+        {# <a class="btn btn-success" href="{{ path('home') }}">Enregistrer </a> #}
+          <button class="btn btn-success" >Enregistrer </button>
+          <a class="btn btn-primary mr-3" href="{{ path('artiste_index') }}">Retour à la liste</a>
+        
+{{ form_end(form) }}

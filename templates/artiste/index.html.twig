@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artiste index{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+            <h1>Les artistes</h1>
+
+            <table class="table table-bordered mr-5  ">
+                <thead class="table-danger text-center ">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Pays</th>
+                        <th>Style</th>
+                        <th>Presentation</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for artiste in artistes %}
+                    <tr>
+                        <td>{{ artiste.id }}</td>
+                        <td>{{ artiste.nom }}</td>
+                        <td>{{ artiste.pays }}</td>
+                        <td>{{ artiste.style }}</td>
+                        <td>{{ artiste.presentation }}</td>
+                        <td>
+                            {# <a href="{{ path('artiste_show', {'id': artiste.id}) }}">show</a>
+                            <a href="{{ path('artiste_edit', {'id': artiste.id}) }}">edit</a> #}
+                             <a class="btn btn-primary  mb-3" href="{{ path('artiste_show', {'id': artiste.id}) }}">Visualiser</a>
+                             <a class="btn btn-success" href="{{ path('artiste_edit', {'id': artiste.id}) }}">Editer </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        
+            <a href="{{ path('artiste_new') }}" class="btn btn-info mb-4">Ajouter un artiste</a>
+    </div>
+     {# <a class="btn btn-info">{{ a_label|default('Créer un nouveau artiste') }}</a> #}
+{% endblock %}

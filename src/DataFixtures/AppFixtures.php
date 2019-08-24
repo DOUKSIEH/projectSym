@@ -8,6 +8,7 @@ use App\Entity\Image;
 use App\Entity\Events;
 use App\Entity\Booking;
 use App\Entity\Comment;
+use App\Entity\EventLike;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -89,8 +90,16 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             $event->setDateDebut($startDate)
                   ->setDateFin($endDate)
                   ->setCreatedAt($faker->dateTimeBetween('-6 months','-3 months'));
-                  $manager->persist($event);       
-                   
+                  $manager->persist($event);     
+
+                for($j=0; $j < mt_rand(0,10); $j++)
+                {
+
+                    $like = new EventLike();
+                    $like->setEvent($event)
+                         ->setUser($faker->randomElement($users));
+                    $manager->persist($like);
+                } 
         }
        $manager->flush();        
     }

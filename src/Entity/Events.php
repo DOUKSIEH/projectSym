@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventsRepository")
@@ -56,6 +59,16 @@ class Events
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EventLike", mappedBy="event")
+     */
+    private $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -156,5 +169,50 @@ class Events
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|EventLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(EventLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(EventLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getEvent() === $this) {
+                $like->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * Permet de savoir si un event est liké par un User
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isLikedByUser(User $user) 
+    {
+      foreach ($this->likes as $like)
+      {
+        if ($like->getUser() === $user) return true;
+      } 
+      return false ;
     }
 }

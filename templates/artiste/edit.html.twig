@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Artiste{% endblock %}
+
+{% block body %}
+   
+    <div class="container mt-3">
+        <h1>Editer...</h1>
+
+        {{ include('artiste/_form.html.twig') }}
+
+    
+        {{ include('artiste/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

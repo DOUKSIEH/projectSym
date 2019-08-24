@@ -3,16 +3,20 @@
 namespace App\Controller;
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Event\RegisterEvent;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
 use Symfony\Component\Form\FormError;
+use App\Eventlistener\Registerlistener;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -43,15 +47,26 @@ class AccountController extends Controller
      * 
      * @return Response
      */
-    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
+    public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, EventDispatcherInterface $dispatcher, Registerlistener $listener) {
+
         $user = new User();
+        
+        
+
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+        
+
         if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $manager->persist($user);
             $manager->flush();
+            $register =  new RegisterEvent($user);
+            $dispatcher->dispatch($register,RegisterEvent::NAME);
+            $dispatcher->addListener(RegisterEvent::NAME,$listener->sendMailToUser($register));
+            
+
             $this->addFlash(
                 'success',
                 "Votre compte a bien été créé ! Vous pouvez maintenant vous connecter !"
