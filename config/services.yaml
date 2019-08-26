@@ -33,6 +33,14 @@ services:
     App\Hello\Geo:
             arguments:
                 $s: 'https://api-adresse.data.gouv.fr/search/?q='
+
+    App\Eventlistener\Registerlistener:
+         tags:
+           - { name: kernel.event_listener,
+               event: user.register,
+               method: sendMailToUser,
+               priority: -10 }
+           
    
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

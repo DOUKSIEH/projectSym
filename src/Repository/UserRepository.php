@@ -18,22 +18,28 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-    public function findLastest() : array
+    public function findLastest() 
     {
-        return $this->findVisibleQuery()
-                    ->setMaxResults(4)
-                    ->getQuery()
-                    ->getResult();
+        return $this->createQueryBuilder('p')
+        // ->orderBy('p.id', 'ASC')
+            ->andWhere('p.createdAt > :date')
+            ->setParameter('date', (new \DateTime('-30 day')))
+        //  $this->findVisibleQuery()
+        //            // ->setMaxResults(4)
+                ->getQuery()
+                   ->getResult();
                     
     }
 
     private function findVisibleQuery() 
     {
         return $this->createQueryBuilder('p')
-                    ->orderBy('p.id', 'ASC')
+                   // ->orderBy('p.id', 'ASC')
+                   ->andWhere('p.createdAt > :date')
+                  ->setParameter('date', (new \DateTime('-30 day')))
         ;
     }
-
+   
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

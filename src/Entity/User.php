@@ -59,7 +59,7 @@ class User implements UserInterface
     private $style;
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min=20, minMessage="Votre description doit faire au moins 100 caractères")
+     * @Assert\Length(min=10, minMessage="Votre description doit faire au moins 20 caractères")
      */
     private $description;
 
@@ -82,6 +82,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\EventLike", mappedBy="user")
      */
     private $likes;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function __construct()
     {
@@ -293,6 +298,18 @@ class User implements UserInterface
                 $like->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

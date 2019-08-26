@@ -17,44 +17,44 @@
                         <small class="mr-5"><em> crée le {{ event.createdAt | date('Y-m-d') }}</em></small>
                         <br> {# </div>
 
-                </div> #} {#
-                <table class="table table-striped">
-                    <tbody> #} {#
-                        <tr>
-                            <th>Date de création </th>
-                            <td>{{ event.createdAt | date('Y-m-d') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Type</th>
-                            <td>{{ event.type }}</td>
-                        </tr> #} {#
-                        <tr>
-                            <th>Lieu</th>
-                            <td>{{ event.adresse }}</td>
-                        </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td>{{ event.description | slice(0,60) | raw }}</td>
-                        </tr>
-                        <tr>
-                            <th>Prix (€) </th>
-                            <td>{{ event.prix }}</td>
-                        </tr>
-                        <tr>
-                            <th>DateDebut</th>
-                            <td>{{ event.dateDebut ? event.dateDebut | date('Y-m-d') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>DateFin</th>
-                            <td>{{ event.dateFin ? event.dateFin | date('Y-m-d') : '' }}</td>
-                        </tr> #}
+                        </div> #} {#
+                        <table class="table table-striped">
+                            <tbody> #} {#
+                                <tr>
+                                    <th>Date de création </th>
+                                    <td>{{ event.createdAt | date('Y-m-d') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Type</th>
+                                    <td>{{ event.type }}</td>
+                                </tr> #} {#
+                                <tr>
+                                    <th>Lieu</th>
+                                    <td>{{ event.adresse }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td>{{ event.description | slice(0,60) | raw }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Prix (€) </th>
+                                    <td>{{ event.prix }}</td>
+                                </tr>
+                                <tr>
+                                    <th>DateDebut</th>
+                                    <td>{{ event.dateDebut ? event.dateDebut | date('Y-m-d') : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>DateFin</th>
+                                    <td>{{ event.dateFin ? event.dateFin | date('Y-m-d') : '' }}</td>
+                                </tr> #}
                         <a href="#" class="btn btn-success flex-float-left">Lire la suite</a>
                         <a href="{{path('events_like',{'id': event.id,})}}" class="btn btn-link js-like" style="color:darkviolet">
                             
                             {% if app.user and event.isLikedByUser(app.user) %}
-                            <i class="fas fa-thumbs-up "></i> 
-                            {% else %}
-                            <i class="far fa-thumbs-up"></i> 
+                                <i class="fas fa-thumbs-up "></i> 
+                                {% else %}
+                                <i class="far fa-thumbs-up"></i> 
                             {% endif %}
                             <span class="js-likes">{{ event.likes | length}}</span>
                             <span class="js-label">J'aime</span>
@@ -68,44 +68,45 @@
     </div>
 </div>
 
-{% endblock %} {% block javascripts %}
+{% endblock %} 
+{% block javascripts %}
 
-<script src="/js/axios.js"></script>
-<script>
-    // const axios = require('axios.js');
-    console.log("coucou");
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // const axios = require('axios.js');
+        console.log("coucou");
 
-    function onClickBtnLike(event) {
+        function onClickBtnLike(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const url = this.href;
+            const url = this.href;
 
-        console.log(url);
+            console.log(url);
 
-        const spanCount = this.querySelector('span.js-likes')
-        console.log(spanCount);
-        const icone = this.querySelector('i');
+            const spanCount = this.querySelector('span.js-likes')
+            console.log(spanCount);
+            const icone = this.querySelector('i');
 
-        axios.get(url).then(function(response) {
+            axios.get(url).then(function(response) {
 
-            spanCount.textContent = response.data.likes;
+                spanCount.textContent = response.data.likes;
 
-            if (icone.classList.contains('fas')) {
-                icone.classList.replace('fas', 'far');
-            } else {
-                icone.classList.replace('far', 'fas');
-            }
-        }).catch(function(error) {
-            if (error.reponse.status === 403) {
-                alert('Vous ne pouvez pas liker si pas connecté')
-            } else {
-                alert("Erreur s'est produite, essayé plus tard")
-            }
+                if (icone.classList.contains('fas')) {
+                    icone.classList.replace('fas', 'far');
+                } else {
+                    icone.classList.replace('far', 'fas');
+                }
+            }).catch(function(error) {
+                if (error.reponse.status === 403) {
+                    alert('Vous ne pouvez pas liker si pas connecté')
+                } else {
+                    alert("Erreur s'est produite, essayé plus tard")
+                }
+            })
+        }
+        document.querySelectorAll('a.js-like').forEach(function(link) {
+            link.addEventListener('click', onClickBtnLike);
         })
-    }
-    document.querySelectorAll('a.js-like').forEach(function(link) {
-        link.addEventListener('click', onClickBtnLike);
-    })
-</script>
+    </script>
 {% endblock %}

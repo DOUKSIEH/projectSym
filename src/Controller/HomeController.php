@@ -16,7 +16,7 @@ class HomeController extends Controller {
     public function home(EventsRepository $eventRepo, UserRepository $userRepo){
         $event = $eventRepo->findLastest();
         $user = $userRepo->findLastest();
-        dump( $userRepo->findLastest());
+       // dump( $userRepo->findLastest());
        // die();
         return $this->render(
             'home/index.html.twig', 

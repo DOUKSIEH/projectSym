@@ -10,7 +10,8 @@
          <p>Conveniently scale future-proof applications before bricks-and-clicks ROI. Progressively re-engineer cost effective opportunities vis-a-vis value-added.</p>
     
         <div class="container">
-            <h2>Les derniers...! </h2>
+            <h2>Les inscrits depuis un mois....! </h2>
+            {{ dump(events)}}
             <div class="row">
                 {% for data in users %}
                 <div class="col">
@@ -23,7 +24,9 @@
                             <div class="card-text">
                                 <img src="{{data.picture}}" alt="Avatar de {{data.fullName}}" class="float-center mr-5">
                                 <br>
-                                <p>{{data.description | slice(0,30) | raw }}</p>
+                                <p>{{data.description | slice(0,30) | raw }} <em style="color:red" class="border">{{data.createdAt | date('d/m/y') }}</em></p>
+                               
+                                <br>
                                 <a href="{{ path('events_show', {'id': data.id,'slug':data.slug})}}" class="btn btn-success float-right">En savoir plus!</a>
                             </div>
                         </div>

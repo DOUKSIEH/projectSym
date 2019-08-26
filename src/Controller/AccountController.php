@@ -64,7 +64,7 @@ class AccountController extends Controller
             $manager->flush();
             $register =  new RegisterEvent($user);
             $dispatcher->dispatch($register,RegisterEvent::NAME);
-            $dispatcher->addListener(RegisterEvent::NAME,$listener->sendMailToUser($register));
+            //$dispatcher->addListener(RegisterEvent::NAME,$listener->sendMailToUser($register));
             
 
             $this->addFlash(

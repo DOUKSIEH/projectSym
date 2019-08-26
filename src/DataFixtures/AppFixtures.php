@@ -38,7 +38,8 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
                   ->setPicture('https://randomuser.me/api/portraits/men/63.jpg')
                    ->setStyle($faker->lastName())
                   ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(1)) . '</p>')
-                  ->addUserRole($adminRole);
+                  ->addUserRole($adminRole)
+                  ->setCreatedAt($faker->dateTimeBetween('-3 months'));
         $manager->persist($adminUser);
         // Nous gérons les utilisateurs
         $users = [];
@@ -56,7 +57,8 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
                  ->setStyle($faker->jobTitle())
                  ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(1)) . '</p>')
                  ->setHash($hash)
-                 ->setPicture($picture);
+                 ->setPicture($picture)
+                 ->setCreatedAt($faker->dateTimeBetween('-3 months'));
             $manager->persist($user);
             $users[] = $user;
         }
