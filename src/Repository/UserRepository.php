@@ -20,23 +20,35 @@ class UserRepository extends ServiceEntityRepository
     }
     public function findLastest() 
     {
-        return $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('a')
         // ->orderBy('p.id', 'ASC')
-            ->andWhere('p.createdAt > :date')
-            ->setParameter('date', (new \DateTime('-30 day')))
+           // ->andWhere('a.createdAt > :date')
+           // ->setParameter('date', (new \DateTime('-30 day')))
+            ->select('a as artiste')
+            ->addSelect('count(e.id) as val')
+            ->join('a.events','e')
+            ->groupBy('a.id')
         //  $this->findVisibleQuery()
         //            // ->setMaxResults(4)
                 ->getQuery()
-                   ->getResult();
+               //->getDQL();
+                  ->getResult();
                     
     }
 
-    private function findVisibleQuery() 
+    public function findVisible() 
     {
-        return $this->createQueryBuilder('p')
-                   // ->orderBy('p.id', 'ASC')
-                   ->andWhere('p.createdAt > :date')
-                  ->setParameter('date', (new \DateTime('-30 day')))
+        return $this->createQueryBuilder('a')
+                    ->select('a as user')
+                    ->addSelect('count(e.id) as val')
+                    ->join('a.events','e')
+                    ->groupBy('a.id')
+                    ->setMaxResults(4)
+                    ->getQuery()
+
+                    //->andWhere('p.createdAt > :date')
+                    //->setParameter('date', (new \DateTime('-30 day')))
+                    ->getResult();
         ;
     }
    

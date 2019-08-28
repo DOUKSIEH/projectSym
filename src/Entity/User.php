@@ -88,11 +88,17 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="commandes")
+     */
+    private $commandes;
+
     public function __construct()
     {
         $this->UserRoles = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
     
     public function getFullName() {
@@ -310,6 +316,37 @@ class User implements UserInterface
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commande[]
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setCommandes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->contains($commande)) {
+            $this->commandes->removeElement($commande);
+            // set the owning side to null (unless already changed)
+            if ($commande->getCommandes() === $this) {
+                $commande->setCommandes(null);
+            }
+        }
 
         return $this;
     }

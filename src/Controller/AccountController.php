@@ -110,6 +110,7 @@ class AccountController extends Controller
      * @return Response
      */
     public function updatePassword(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager) {
+        
         $passwordUpdate = new PasswordUpdate();
         $user = $this->getUser();
         $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);

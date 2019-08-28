@@ -1,43 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue!{% endblock %}
+{% block title %}{% trans %}text.msg{% endtrans %}!{% endblock %}
 
 {% block body %}
 
-    <div class="jumbotron text-center">
-        <h1>Bienvenue...!✅</h1>
+    {# <div class="jumbotron text-center"> #}
        
-         <p>Conveniently scale future-proof applications before bricks-and-clicks ROI. Progressively re-engineer cost effective opportunities vis-a-vis value-added.</p>
+        <h1 class=" text-center"> {% trans %}text.msg{% endtrans %}...!✅</h1>
+       
+        {# {{message}} #}
+        {# {% trans  with {'events': nbEvents} %}num_of_events{% endtrans %} #}
+         <p class=" text-center" >{% trans %}texte{% endtrans %}.</p>
     
-        <div class="container">
-            <h2>Les inscrits depuis un mois....! </h2>
-            {{ dump(events)}}
-            <div class="row">
-                {% for data in users %}
-                <div class="col">
+        <div class="container mt-4">
+            {# <h2>Les événements des utilisateurs qui se sont inscrit depuis un mois....! </h2> #}
+             {# {{ dump(events)}} #} 
+            {# {% for i in 0..users|length %}
+               <li> {{ users.0 }} </li> 
+            {% endfor %} #}
+           
+          
+           <div class="row"> 
+             {% for data in users %}
+                <div class="col-3">
                     <div class="card border-secondary mb-3">
                         <div class="card-body">
-                            <h4 class="card-title">{{data.fullName}}</h4>
+                            <h4 class="card-title">{{data.artiste.fullName}}</h4>
         
                             <hr>
         
                             <div class="card-text">
-                                <img src="{{data.picture}}" alt="Avatar de {{data.fullName}}" class="float-center mr-5">
+                                <img src="{{data.artiste.picture}}" alt="Avatar de {{data.artiste.fullName}}" class="float-center mr-5">
                                 <br>
-                                <p>{{data.description | slice(0,30) | raw }} <em style="color:red" class="border">{{data.createdAt | date('d/m/y') }}</em></p>
+                                <p> {{data.artiste.description | slice(0,30) | raw }}  </p>
+                                <p><strong style="color:blue" >  {% trans  with {'events': data.val } %}num_of_events{% endtrans %}  {% trans %}text{% endtrans %} </strong> <em style="color:red"> {{data.artiste.createdAt | date('d/m/y') }}</em></p>
+                    
                                
                                 <br>
-                                <a href="{{ path('events_show', {'id': data.id,'slug':data.slug})}}" class="btn btn-success float-right">En savoir plus!</a>
+                                <a href="{{ path('events_show', {'id': data.artiste.id,'slug':data.artiste.slug})}}" class="btn btn-success float-right">En savoir plus!</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+             {% endfor %}
+{# 
+                {% for u in users %}
+                    <p>Nombre d'évébements : {{ u['val'] }}</p>
+                    <p>Nom : {{ u.artiste.firstName ~ ' ' ~  u.artiste.lastName}}</p>
+                {% endfor %} #}
             </div>
 
 
 
         </div>
         
-    </div>
+    {# </div> #}
 {% endblock %}

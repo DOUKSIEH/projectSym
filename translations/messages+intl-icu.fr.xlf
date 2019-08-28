@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="num_of_events" resname="num_of_events">
+                <source>num_of_events</source>
+                <target>{events, plural, =0 {Il n'y a pas d'événement} one {Il y a un événement enregistré} other {Il y a # événements annoncés!}}</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
