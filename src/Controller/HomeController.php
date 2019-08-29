@@ -18,8 +18,8 @@ class HomeController extends Controller {
         $event = $eventRepo->findLastest();
         $user = $userRepo->findLastest();
 
-        $msg = $translator->trans('text.msg');
-        $events = $translator->trans('num_of_events', ['events' => 0]);  
+        // $msg = $translator->trans('text.msg');
+        // $events = $translator->trans('num_of_events', ['events' => 0]);  
          
     //    dd($events);
     // dd($user);
@@ -28,10 +28,10 @@ class HomeController extends Controller {
         return $this->render(
             'home/index.html.twig', 
             [
-                'message' => $msg,
+               // 'message' => $msg,
                 'events' => $event,
                 'users' => $user,
-                'nbEvents' => 6
+               // 'nbEvents' => 6
             ]
         );
     }

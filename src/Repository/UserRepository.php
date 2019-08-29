@@ -21,15 +21,15 @@ class UserRepository extends ServiceEntityRepository
     public function findLastest() 
     {
         return $this->createQueryBuilder('a')
-        // ->orderBy('p.id', 'ASC')
-           // ->andWhere('a.createdAt > :date')
-           // ->setParameter('date', (new \DateTime('-30 day')))
+       // ->orderBy('p.id', 'ASC')
+           ->andWhere('a.createdAt > :date')
+           ->setParameter('date', (new \DateTime('-30 day')))
             ->select('a as artiste')
             ->addSelect('count(e.id) as val')
             ->join('a.events','e')
             ->groupBy('a.id')
         //  $this->findVisibleQuery()
-        //            // ->setMaxResults(4)
+        ->setMaxResults(5)
                 ->getQuery()
                //->getDQL();
                   ->getResult();
