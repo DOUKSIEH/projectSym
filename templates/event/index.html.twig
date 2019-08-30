@@ -3,13 +3,37 @@
 {% block title %}Nos magnifiques annonces{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="my-5">Voici les annonces de nos hôtes !</h1>
+        <div class="container">
+    
+         <h1 class="my-5">Voici les annonces de nos hôtes</h1>
+                        <div class="row"> 
+                           
+                            {% for event in events %}
+                                <div class="col-3">
+                                    <div class="card border-secondary mb-3">
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{event.type}}</h4>
+                        
+                                            {# <hr>
+                        
+                                            <div class="card-text">
+                                                <img src="{{data.commandes.picture}}" alt="Avatar de {{data.commandes.fullName}}" class="float-center mr-5 mb-3">
+                                                <br>
+                                                <p>numéro de commande : <strong style="color:blue" > {{ data.nbCommmande }} </strong> </p>
+                                                <p>Date de commande: <em style="color:red"> {{data.datecomd | date('d/m/y') }}</em></p> #}
+                                    
+                                            
+                                            
+                                            {# </div> #}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
 
-    <div class="row">
-        {% for event in events %}
-            {% include 'ad/_ad.html.twig' %}
-        {% endfor %}
-    </div>
-</div>
+                        </div>
+
+
+
+                
+        </div>
 {% endblock %}

@@ -25,6 +25,7 @@ class EventController extends AbstractController
     public function index(EventsRepository $repo)
     {
         $events = $repo->findAll();
+       // dd($events);
         return $this->render('event/index.html.twig', [
             'events' => $events
         ]);
